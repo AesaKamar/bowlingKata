@@ -1,8 +1,13 @@
 package example
 
 sealed trait Frame
-case class F2(b1: Bowl, b2: Bowl) extends Frame
-case class FB(b1: Bowl, b2: Bowl, b3: Option[Bowl])
+sealed trait NormalFrame extends Frame
+
+case class F_Strike(b1: Strike.type ) extends NormalFrame
+case class F_Spare (b1: Point, b2: Spare.type ) extends NormalFrame
+case class F_Point (b1: Point, b2: Point ) extends NormalFrame
+
+case class FBonus(b1: Bowl, b2: Bowl, b3: Option[Bowl]) extends Frame
 
 
 sealed trait Bowl{
@@ -19,5 +24,11 @@ case object Strike extends Bowl{
 
 object Scoring {
 
+  def score(game: List[Frame]): Int = {
+    game match {
+      case head :: tail => 0
+      case Nil => 0
+    }
+  }
 }
 
