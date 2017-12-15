@@ -12,11 +12,19 @@ class ScoringTest
 
   "Scoring Pointed values" - {
     "[0,0] => 0" in {
-      scoringFunction(F_Point(Point(0), Point(0)) :: Nil) shouldBe 0
+      scoringFunction(FN_Point(Point(0), Point(0)) :: Nil) shouldBe 0
     }
-    "[0,0] , [0,0] => 0" in {
+    "[0,0] , [0,0] , [0,0]=> 0" in {
       scoringFunction(
-        F_Point(Point(0), Point(0)) :: F_Point(Point(0), Point(0)) :: Nil) shouldBe 0
+        List(FN_Point(Point(0), Point(0)),
+             FN_Point(Point(0), Point(0)),
+             FN_Point(Point(0), Point(0)))) shouldBe 0
+    }
+    "10*[1,1] , [1,1, ] => 20" in {
+      scoringFunction(
+        List.fill(9)(FN_Point(Point(1), Point(1))) ++ List(
+          FB_Normal(Point(1), Point(1)))
+      ) shouldBe 20
     }
   }
 
