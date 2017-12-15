@@ -2,6 +2,11 @@ package example
 
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 import org.scalatest.{FreeSpec, Matchers}
+import cats._
+import cats.data.Validated._
+import cats.data._
+import cats.implicits._
+import cats.syntax._
 
 class ScoringTest
     extends FreeSpec
@@ -67,9 +72,26 @@ class ScoringTest
           FN_Point(Point(0), Point(0)))) shouldBe 60
       }
       "9*[X], [X,X,X]=> 300" in {
-        scoringFunction(List.fill(9)(FN_Strike(Strike)) ++ List(
-          FB_Special(Strike, Strike, Strike))) shouldBe 300
+        scoringFunction(
+          List.fill(9)(FN_Strike(Strike)) ++ List(
+            FB_Special(Strike, Strike, Strike))) shouldBe 300
       }
+    }
+  }
+
+  "Validating a game" - {
+    "[X,X,X], [X] => INVALID" in {
+      Scoring.validate(List(FB_Special(Strike, Strike, Strike),
+                            FN_Strike(Strike))) shouldBe 'invalid
+    }
+    "11* [X] => INVALID" in {
+      Scoring.validate(List.fill(11)(FN_Strike(Strike))) shouldBe 'invalid
+    }
+
+    "9*[X], [X,X,X] => VALID" in {
+      Scoring.validate(
+        List.fill(9)(FN_Strike(Strike)) ++ List(
+          FB_Special(Strike, Strike, Strike))) shouldBe 'valid
     }
   }
 
