@@ -10,6 +10,18 @@ class ScoringTest
 
   val scoringFunction = Scoring.score _
 
+  "Helpers" - {
+    "flatten" in {
+      Scoring.flatten(List(FN_Spare(Point(0), Spare),
+                           FB_Special(Strike, Strike, Strike))) shouldBe List(
+        Point(0),
+        Spare,
+        Strike,
+        Strike,
+        Strike)
+    }
+  }
+
   "Scoring Pointed values" - {
     "[0,0] => 0" in {
       scoringFunction(FN_Point(Point(0), Point(0)) :: Nil) shouldBe 0
@@ -33,6 +45,19 @@ class ScoringTest
              FN_Spare(Point(0), Spare),
              FN_Point(Point(0), Point(0)))
       )
+    }
+
+    "9* [0,0] , [5,/,5] => 15" in {
+      scoringFunction(
+        List.fill(9)(FN_Point(Point(0), Point(0))) ++ List(
+          FB_Special(Point(5), Spare, Point(5)))
+      ) shouldBe 15
+    }
+    "9* [5,/] , [5,/,5] => 150" in {
+      scoringFunction(
+        List.fill(9)(FN_Spare(Point(5), Spare)) ++ List(
+          FB_Special(Point(5), Spare, Point(5)))
+      ) shouldBe 150
     }
   }
 
