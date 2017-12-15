@@ -59,6 +59,7 @@ object Scoring {
       // Handle Normal Frames
       case FN_Point(b1, b2) :: tail    => b1.v + b2.v + score(tail)
       case FN_Spare(b1, Spare) :: tail => Spare.v + sumRaw(takeNBowls(tail)(1)) + score(tail)
+      case FN_Strike(Strike) :: tail => Strike.v + sumRaw(takeNBowls(tail)(2)) + score(tail)
     }
   }
 }
