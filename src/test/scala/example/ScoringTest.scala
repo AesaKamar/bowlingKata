@@ -8,6 +8,12 @@ import cats.data._
 import cats.implicits._
 import cats.syntax._
 
+/**
+  * Was tested with the help of this program
+  * http://www.sportcalculators.com/bowling-score-calculator
+  *
+  * So I could figure out what the heck the rules for bowling were
+  */
 class ScoringTest
     extends FreeSpec
     with Matchers
