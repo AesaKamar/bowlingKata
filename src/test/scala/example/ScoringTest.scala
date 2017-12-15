@@ -26,6 +26,14 @@ class ScoringTest
           FB_Normal(Point(1), Point(1)))
       ) shouldBe 20
     }
+
+    "[5,/] , [5,/], [0,0] => 25" in {
+      scoringFunction(
+        List(FN_Spare(Point(0), Spare),
+             FN_Spare(Point(0), Spare),
+             FN_Point(Point(0), Point(0)))
+      )
+    }
   }
 
 }
