@@ -84,21 +84,4 @@ class ScoringTest
       }
     }
   }
-
-  "Validating a game" - {
-    "[X,X,X], [X] => INVALID" in {
-      Scoring.validate(List(FB_Special(Strike, Strike, Strike),
-                            FN_Strike(Strike))) shouldBe 'invalid
-    }
-    "11* [X] => INVALID" in {
-      Scoring.validate(List.fill(11)(FN_Strike(Strike))) shouldBe 'invalid
-    }
-
-    "9*[X], [X,X,X] => VALID" in {
-      Scoring.validate(
-        List.fill(9)(FN_Strike(Strike)) ++ List(
-          FB_Special(Strike, Strike, Strike))) shouldBe 'valid
-    }
-  }
-
 }

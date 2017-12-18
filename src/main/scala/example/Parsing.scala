@@ -1,6 +1,7 @@
 package example
 
 import cats._
+import cats.data.{Validated, ValidatedNel}
 import cats.implicits._
 import fastparse.all._
 import fastparse.core.Parsed.{Failure, Success}
@@ -38,8 +39,13 @@ object Parsing {
 
   val frameParser : Parser[Frame] = normalFrameParser | bonusFrameParser
 
-  def parseFrames(input: String): Option[List[Frame]] = {
+  val framesParser : Parser[List[Frame]] = frameParser.rep.map(_.toList)
+
+
+  def parseIntoFrames(inp: String): Validated[ParsingError.type , List[Frame]] = {
     ???
   }
 
 }
+
+

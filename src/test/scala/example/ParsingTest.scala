@@ -48,9 +48,8 @@ class ParsingTest
 
   }
 
-  "Parsing into normal frames" ignore {
-    "Pointed" - {
-    }
+  "Parsing into normal frames" - {
+    "11 11 11 11 11"
   }
 
 }
