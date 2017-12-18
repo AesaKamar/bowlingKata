@@ -31,7 +31,3 @@ object Validation {
 }
 
 
-sealed trait BowlingValidationFailure
-case object BonusFoundIntermediately extends BowlingValidationFailure
-case object GameTooLong extends BowlingValidationFailure
-case object ParsingError extends BowlingValidationFailure
