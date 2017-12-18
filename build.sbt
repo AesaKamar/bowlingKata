@@ -13,6 +13,7 @@ lazy val root = (project in file(".")).
       "org.scalacheck" %% "scalacheck" % "1.13.4" % "test",
       "org.typelevel" %% "cats-core" % "1.0.0-RC1",
       "com.lihaoyi" %% "pprint" % "0.5.3",
+      "com.lihaoyi" %% "fastparse" % "1.0.0",
       "com.chuusai" %% "shapeless" % "2.3.2"
     )
   )
