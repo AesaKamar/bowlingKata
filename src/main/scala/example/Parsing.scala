@@ -33,20 +33,27 @@ object Parsing {
   }
 
   val bonusFrameParser : Parser[BonusFrame] =
-    ((pointParser ~ pointParser) | (bowlParser ~ specialBowlParser ~ bowlParser)).map{
-    case (p1: Point, p2: Point) => FB_Normal(p1, p2)
+    ( (bowlParser ~ specialBowlParser ~ bowlParser) | (pointParser ~ pointParser) ~ End).map{
     case (b1: Bowl, sb2: S_Bowl, b3: Bowl) => FB_Special(b1, sb2, b3)
+    case (p1: Point, p2: Point) => FB_Normal(p1, p2)
   }
 
-  val frameParser : Parser[Frame] = normalFrameParser | bonusFrameParser
-
-  val framesParser : Parser[List[Frame]] = frameParser.rep.map(_.toList)
+  val frameParser : Parser[Frame] = bonusFrameParser | bonusFrameParser
 
 
-  def parseIntoFrames(inp: String): Validated[ParsingError.type , List[Frame]] = {
-    framesParser.parse(inp.filterNot(_.isWhitespace)) match {
+
+  def parseIntoNFrames(inp: String, n: Int): Validated[ParsingError.type , List[Frame]] = {
+    ( normalFrameParser.rep(exactly=n)  ~ bonusFrameParser.?)
+      .map{case (norms, bonusOpt) => (norms ++ bonusOpt).toList}
+      .parse(inp.filterNot(_.isWhitespace)) match {
       case Success(fs, _) => Valid(fs)
-      case _ => Invalid(ParsingError)
+      case Failure(lp, i, e) =>
+//        pprintln(e.traced.trace)
+//        println("===")
+//        pprintln(e)
+//        println("===")
+//        pprintln(e.traced.expected)
+        Invalid(ParsingError)
     }
   }
 
