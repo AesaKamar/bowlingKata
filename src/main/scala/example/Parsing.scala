@@ -42,18 +42,13 @@ object Parsing {
 
 
 
-  def parseIntoNFrames(inp: String, n: Int): Validated[ParsingError.type , List[Frame]] = {
+  def parseIntoNFrames(inp: String, n: Int): ValidatedNel[ ParsingError.type , List[Frame]] = {
     ( normalFrameParser.rep(exactly=n)  ~ bonusFrameParser.?)
       .map{case (norms, bonusOpt) => (norms ++ bonusOpt).toList}
       .parse(inp.filterNot(_.isWhitespace)) match {
       case Success(fs, _) => Valid(fs)
       case Failure(lp, i, e) =>
-//        pprintln(e.traced.trace)
-//        println("===")
-//        pprintln(e)
-//        println("===")
-//        pprintln(e.traced.expected)
-        Invalid(ParsingError)
+        Invalid(NonEmptyList.of(ParsingError))
     }
   }
 
